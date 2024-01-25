@@ -7,6 +7,11 @@ const copyDir = async () => {
   try {
     await fs.mkdir(copyRoute, { recursive: true });
     const files = await fs.readdir(mainRoute);
+    const filesCopy = await fs.readdir(copyRoute);
+    const filesDelete = filesCopy.filter((file) => !files.includes(file));
+    await Promise.all(
+      filesDelete.map((file) => fs.unlink(path.join(copyRoute, file))),
+    );
     await Promise.all(
       files.map(async (file) => {
         const mainPath = path.join(mainRoute, file);
