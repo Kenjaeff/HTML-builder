@@ -3,13 +3,14 @@ const path = require('path');
 
 async function mergeStyles() {
   try {
+    const stylesRoute = path.join(__dirname, 'styles');
     const styles = await Promise.all(
-      (await fs.readdir('styles'))
+      (await fs.readdir(stylesRoute))
         .filter((file) => path.extname(file) === '.css')
-        .map((file) => fs.readFile(path.join('styles', file), 'utf-8')),
+        .map((file) => fs.readFile(path.join(stylesRoute, file), 'utf-8')),
     );
     await fs.writeFile(
-      path.join('project-dist', 'bundle.css'),
+      path.join(__dirname, 'project-dist', 'bundle.css'),
       styles.join('\n'),
     );
 
